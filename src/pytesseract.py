@@ -32,7 +32,11 @@ if pandas_installed:
     import pandas as pd
 
 # CHANGE THIS IF TESSERACT IS NOT IN YOUR PATH, OR IS NAMED DIFFERENTLY
-tesseract_cmd = 'tesseract'
+tess_env = os.environ.copy()
+tesseract_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tesseract_built')
+tess_env['LD_LIBRARY_PATH'] = '{0}/full_libs/'.format(tesseract_path)
+tess_env['TESSDATA_PREFIX'] = '{0}'.format(tesseract_path)
+tesseract_cmd =  '{0}/bin/tesseract'.format(tesseract_path)
 RGB_MODE = 'RGB'
 OSD_KEYS = {
     'Page number': ('page_num', int),
@@ -144,8 +148,8 @@ def subprocess_args(include_stdout=True):
     kwargs = {
         'stdin': subprocess.PIPE,
         'stderr': subprocess.PIPE,
-        'startupinfo': None,
-        'env': os.environ
+        'startupinfo': None
+        #'env': os.environ
     }
 
     if hasattr(subprocess, 'STARTUPINFO'):
@@ -181,7 +185,7 @@ def run_tesseract(input_filename,
         cmd_args.append(extension)
 
     try:
-        proc = subprocess.Popen(cmd_args, **subprocess_args())
+        proc = subprocess.Popen(cmd_args, env=tess_env, **subprocess_args())
         status_code, error_string = proc.wait(), proc.stderr.read()
     except OSError:
         raise TesseractNotFoundError()
@@ -297,6 +301,7 @@ def image_to_string(image,
                     config='',
                     nice=0,
                     output_type=Output.STRING):
+
     '''
     Returns the result of a Tesseract OCR run on the provided image to string
     '''

@@ -1,5 +1,6 @@
 import os
 from setuptools import setup
+from glob import glob
 
 
 README_PATH = 'README.rst'
@@ -11,6 +12,9 @@ if os.path.exists(README_PATH):
 INSTALL_REQUIRES = ['Pillow']
 PACKAGE_NAME = 'pytesseract'
 PACKAGE_DIR = 'src'
+
+if not os.path.exists('src/tesseract_built'):
+    raise Exception("This is meant to be a self contained package and cannot be built without the tesseract_built directory")
 
 setup(
     name=PACKAGE_NAME,
