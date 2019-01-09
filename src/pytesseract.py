@@ -372,9 +372,6 @@ def image_to_data(image,
     and other information. Requires Tesseract 3.05+
     '''
 
-    if get_tesseract_version() < '3.05':
-        raise TSVNotSupported()
-
     config = '{} {}'.format('-c tessedit_create_tsv=1', config.strip()).strip()
     args = [image, 'tsv', lang, config, nice]
 

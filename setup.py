@@ -10,7 +10,7 @@ if os.path.exists(README_PATH):
         LONG_DESC = readme.read()
 
 INSTALL_REQUIRES = ['Pillow']
-PACKAGE_NAME = 'pytesseract'
+PACKAGE_NAME = 'pytesseract_bundled4'
 PACKAGE_DIR = 'src'
 
 if not os.path.exists('src/tesseract_built'):
@@ -18,7 +18,7 @@ if not os.path.exists('src/tesseract_built'):
 
 setup(
     name=PACKAGE_NAME,
-    version='0.2.6',
+    version='0.2.7',
     author='Samuel Hoffstaetter',
     author_email='samuel@hoffstaetter.com',
     maintainer='Matthias Lee',
